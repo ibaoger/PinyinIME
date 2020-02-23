@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+android {
+    // 和 libs/android.jar 保持一致
+    compileSdkVersion 25
+    buildToolsVersion "26.0.2"
+
+    aaptOptions {
+        noCompress 'dat'
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        // 和 libs/android.jar 保持一致
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0.0"
+        applicationId "com.android.inputmethod.pinyin"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-Wall"
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+dependencies {
+    provided files('libs/android.jar')
+}
